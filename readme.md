@@ -1,4 +1,4 @@
-# Static Face Host
+# Face
 
 A simple static file server for hosting static files.
 

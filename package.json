@@ -4,7 +4,7 @@
   "type": "module",
   "packageManager": "pnpm@10.2.1",
   "scripts": {
-    "update": "node --no-warnings --experimental-transform-types ./scripts/update-face.ts"
+    "update": "node --no-warnings --experimental-transform-types ./update-face.ts"
   },
   "keywords": [
     "face",
