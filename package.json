@@ -1,0 +1,21 @@
+{
+  "name": "@vikiboss/face",
+  "version": "2025.2.13",
+  "type": "module",
+  "packageManager": "pnpm@10.2.1",
+  "scripts": {
+    "update": "node --no-warnings --experimental-transform-types ./scripts/update-face.ts"
+  },
+  "keywords": [
+    "face",
+    "qface",
+    "qqface",
+    "emoji"
+  ],
+  "author": "Viki <hi@viki.moe> (https://github.com/vikiboss)",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.13.2",
+    "prettier": "^3.5.0"
+  }
+}
