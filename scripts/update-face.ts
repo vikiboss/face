@@ -93,7 +93,7 @@ const panelNames = ['normal', 'super', 'redHeart', 'other']
         describe: emoji.describe,
         src:
           hasApng || hasPng
-            ? `https://cdn.jsdelivr.net/gh/vikiboss/static-face-host@main/face/${hasApng ? 'apng' : 'png'}/${emoji.emojiId}.png`
+            ? `https://github.com/vikiboss/static-face-host/raw/refs/heads/main/face/${hasApng ? 'apng' : 'png'}/${emoji.emojiId}.png`
             : '',
         download: {
           base: emoji.downloadInfo.baseResDownloadUrl,
