@@ -2,8 +2,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import config from './raw/sys_emoji_config.json' with { type: 'json' }
 
-const rawDir = path.join(import.meta.dirname, '../raw')
-const faceDir = path.join(import.meta.dirname, '../face')
+const rawDir = path.join(import.meta.dirname, './raw')
+const faceDir = path.join(import.meta.dirname, './face')
 
 const faceApngDir = path.join(faceDir, './apng')
 const facePngDir = path.join(faceDir, './png')
@@ -93,7 +93,7 @@ const panelNames = ['normal', 'super', 'redHeart', 'other']
         describe: emoji.describe,
         src:
           hasApng || hasPng
-            ? `https://github.com/vikiboss/static-face-host/raw/refs/heads/main/face/${hasApng ? 'apng' : 'png'}/${emoji.emojiId}.png`
+            ? `https://face.viki.moe/${hasApng ? 'apng' : 'png'}/${emoji.emojiId}.png`
             : '',
         download: {
           base: emoji.downloadInfo.baseResDownloadUrl,
