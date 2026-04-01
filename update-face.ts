@@ -92,6 +92,18 @@ function resolveEmojiId(emoji: RawEmoji): string {
   return match ? match[1] : ''
 }
 
+function isApng(filePath: string): boolean {
+  const buf = fs.readFileSync(filePath)
+  for (let i = 8; i + 8 < buf.length;) {
+    const len = buf.readUInt32BE(i)
+    const name = buf.slice(i + 4, i + 8).toString('ascii')
+    if (name === 'acTL') return true
+    if (name === 'IDAT') return false // acTL 必须在 IDAT 之前
+    i += 12 + len
+  }
+  return false
+}
+
 async function downloadFile(url: string, dest: string) {
   const res = await fetch(url)
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
@@ -134,8 +146,19 @@ async function fetchEmojiAssets(
       execSync(`unzip -o "${zipPath}" -d "${extractDir}"`, { stdio: 'pipe' })
       fs.rmSync(zipPath, { force: true })
 
+      // 优先用 _0.png（静态首帧），部分表情的 {id}.png 本身是 APNG
+      const pngSrc0 = path.join(extractDir, emojiId, 'png', `${emojiId}_0.png`)
       const pngSrc = path.join(extractDir, emojiId, 'png', `${emojiId}.png`)
-      if (fs.existsSync(pngSrc)) { fs.copyFileSync(pngSrc, pngDest); got.push('png') }
+      const candidate = fs.existsSync(pngSrc0) ? pngSrc0 : pngSrc
+      if (fs.existsSync(candidate)) {
+        // 检查是否仍为 APNG（acTL chunk），若是则用 ffmpeg 提取第一帧
+        if (isApng(candidate)) {
+          execSync(`ffmpeg -y -i "${candidate}" -vframes 1 "${pngDest}"`, { stdio: 'pipe' })
+        } else {
+          fs.copyFileSync(candidate, pngDest)
+        }
+        got.push('png')
+      }
     }
 
     console.log(`  [${idx}] ${emojiId} ${name}  →  ${got.join(' + ') || '(无资源)'}`)
